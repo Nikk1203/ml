@@ -1,0 +1,35 @@
+class McCullochPittsNeuron:
+    def __init__(self, weights, threshold):
+        self.weights = weights
+        self.threshold = threshold
+
+    def activate(self, inputs):
+        if len(inputs) != len(self.weights):
+            raise ValueError("Number of inputs must match number of weights")
+
+        # Calculate the weighted sum of inputs
+        weighted_sum = sum(w * x for w, x in zip(self.weights, inputs))
+
+        # Apply threshold activation function
+        output = 1 if weighted_sum >= self.threshold else 0
+
+        return output
+
+# Define the weights and threshold for the OR gate
+or_gate_weights = [1, 1]
+or_gate_threshold = 1
+
+# Create an OR gate neuron
+or_gate = McCullochPittsNeuron(or_gate_weights, or_gate_threshold)
+
+# Test the OR gate with different input combinations
+inputs = [
+    [0, 0],  # Should output 0
+    [0, 1],  # Should output 1
+    [1, 0],  # Should output 1
+    [1, 1]   # Should output 1
+]
+
+for input_vals in inputs:
+    output = or_gate.activate(input_vals)
+    print(f"Input: {input_vals}, Output: {output}")
