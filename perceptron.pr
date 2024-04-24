@@ -1,0 +1,43 @@
+import numpy as np
+ 
+# Define the AND gate truth table
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+Y = np.array([[0], [0], [0], [1]])
+ 
+# Initialize weights and bias
+np.random.seed(42)  # For reproducibility
+weights = np.random.rand(2, 1)  # Weights for each input
+bias = np.random.rand(1)
+ 
+# Define the step function (binary activation function)
+def step_function(x):
+    return 1 if x >= 0 else 0
+ 
+# Define the perceptron function
+def perceptron(input_features, weights, bias):
+    # Calculate the weighted sum of inputs
+    weighted_sum = np.dot(input_features, weights) + bias
+    # Apply the activation function
+    output = step_function(weighted_sum)
+    return output
+ 
+# Train the perceptron using the single-layer perceptron learning algorithm
+learning_rate = 0.1
+epochs = 1000
+for epoch in range(epochs):
+    # Iterate through each training example
+    for i in range(len(X)):
+        input_features = X[i]
+        target_output = Y[i]
+        # Compute the predicted output
+        predicted_output = perceptron(input_features, weights, bias)
+        # Update weights and bias using the perceptron learning rule
+        error = target_output - predicted_output
+        weights += learning_rate * error * input_features.reshape(-1, 1)
+        bias += learning_rate * error
+ 
+# Test the trained perceptron
+test_inputs = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+for input_features in test_inputs:
+    output = perceptron(input_features, weights, bias)
+    print(f"Input: {input_features}, Output: {output}")
